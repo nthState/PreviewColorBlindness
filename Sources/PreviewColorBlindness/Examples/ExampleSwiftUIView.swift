@@ -30,11 +30,11 @@ extension ExampleSwiftUIView: View {
   
   var text: some View {
     VStack {
-      Text("Hello, Earth")
+      Text("This is blue text")
         .foregroundColor(.blue)
-      Text("Hello, Mars")
+      Text("This is red text")
         .foregroundColor(.red)
-      Text("Hello, Sun")
+      Text("This is yellow text")
         .foregroundColor(.yellow)
     }
   }
@@ -54,12 +54,15 @@ struct ExampleSwiftUIView_Previews: PreviewProvider {
     Group {
       ExampleSwiftUIView()
         .previewDisplayName("None")
+      
       ExampleSwiftUIView()
         .previewColorBlindness(type: .protanope)
         .previewDisplayName("Protanope")
+      
       ExampleSwiftUIView()
         .previewColorBlindness(type: .deuteranope)
         .previewDisplayName("Deuteranope")
+      
       ExampleSwiftUIView()
         .previewColorBlindness(type: .tritanopia)
         .previewDisplayName("Tritanopia")
