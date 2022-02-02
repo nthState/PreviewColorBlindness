@@ -60,9 +60,7 @@ struct ColorBlindness<V>: ViewModifier where V: View {
   @State var image: UIImage?
   @State var imageSize: CGSize = .zero
   
-  private func createReferenceImage() async -> UIImage? {
-    //try? await Task.sleep(nanoseconds: UInt64(0.032 * Double(NSEC_PER_SEC)))
-    //sleep(UInt32(0.032))
+  internal func createImage() -> UIImage? {
     let engine = MetalEngine.instance
     let snapshotImage = view.asImage()
     var texture = snapshotImage.textureFromImage(device: engine.device)
@@ -72,6 +70,13 @@ struct ColorBlindness<V>: ViewModifier where V: View {
     self.imageSize = snapshotImage.size
     
     return outputImage
+  }
+  
+  public func createReferenceImage() async -> UIImage? {
+    //try? await Task.sleep(nanoseconds: UInt64(0.032 * Double(NSEC_PER_SEC)))
+    //sleep(UInt32(0.032))
+    
+    return createImage()
   }
   
   public func body(content: Content) -> some View {

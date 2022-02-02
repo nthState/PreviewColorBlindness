@@ -25,6 +25,9 @@ let package = Package(
             resources: [.process("Metal/Shaders.metal")]),
         .testTarget(
             name: "PreviewColorBlindnessTests",
-            dependencies: ["PreviewColorBlindness"]),
+            dependencies: ["PreviewColorBlindness"],
+            resources: [
+              .copy("Resources/test_1.jpg")
+            ]),
     ]
 )
