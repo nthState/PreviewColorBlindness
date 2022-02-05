@@ -1,0 +1,15 @@
+@Tutorials(name: "aa") {
+    @Intro(title: "Guide on using PreviewColorBlindness") {
+        Guides on using Preview Color Blindness
+
+    }
+    
+    @Chapter(name: "Getting Started, Adding the View Modifier") {
+        Getting Started with PreviewColorBlindness
+        
+        @Image(source: "03_Preview.png")
+        
+        @TutorialReference(tutorial: "doc:Getting-Started-with-PreviewColorBlindness")
+    }
+
+}

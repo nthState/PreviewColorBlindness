@@ -1,0 +1,41 @@
+@Tutorial() {
+  @Intro(title: "Getting Started with PreviewColorBlindness in SwiftUI") {
+    In this tutorial, I'll show you how to preview your SwiftUI Views to
+    show what they would look like to someone who has Colour Blindness
+  }
+  
+  @Section(title: "Adding a Preview") {
+    @ContentAndMedia {
+      Let's see what an image and text looks like if your user has Protanope - a type
+      of colour blindess.
+      
+      Note, this is a fairly slow process that rasterizes the view, so I recommend using on Previews only at this time.
+    }
+    
+    @Steps {
+      @Step {
+        Start of with a simple preview of a view, we have text and an image
+        
+        @Code(name: "Preview.swift", file: "01_Preview.swift") {
+          @Image(source: "01_Preview.png")
+        }
+      }
+      
+      @Step {
+        Import the PreviewColorBlindess Swift Package
+        
+        @Code(name: "Preview.swift", file: "02_Preview.swift") {
+          @Image(source: "02_Preview.png")
+        }
+      }
+      
+      @Step {
+        Add the .previewColorBlindness view modifier, note the effect on the view
+        
+        @Code(name: "Preview.swift", file: "03_Preview.swift") {
+          @Image(source: "03_Preview.png")
+        }
+      }
+    }
+  }
+}

@@ -10,6 +10,7 @@
 import SwiftUI
 import MetalKit
 
+/// What type of colour blindness to simulate
 public enum ColorBlindnessType {
   case none
   case protanope
@@ -53,7 +54,8 @@ public extension View {
   
 }
 
-struct ColorBlindness<V>: ViewModifier where V: View {
+/// View Modifier
+public struct ColorBlindness<V>: ViewModifier where V: View {
   
   let view: V
   let type: ColorBlindnessType
