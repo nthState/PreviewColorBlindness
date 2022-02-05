@@ -1,6 +1,6 @@
 # ``PreviewColorBlindness``
 
-A Preview View Modifier to simulate Colour Blindness
+A Preview View Modifier to simulate different types of Colour Blindness
 
 ## Overview
 
