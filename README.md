@@ -19,3 +19,8 @@ struct ExampleSwiftUIView_Previews: PreviewProvider {
 #endif
 
 ```
+
+| Before | After |
+|--------|-------|
+![Before](Sources/PreviewColorBlindness/PreviewColorBlindness.docc/Resources/Images/01_Preview.png)|![After](Sources/PreviewColorBlindness/PreviewColorBlindness.docc/Resources/Images/03_Preview.png)
+
