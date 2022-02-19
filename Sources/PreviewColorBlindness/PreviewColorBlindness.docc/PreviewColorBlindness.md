@@ -4,6 +4,10 @@ A Preview View Modifier to simulate different types of Colour Blindness
 
 ## Overview
 
+| Before | After |
+|--------|-------|
+![Before](01_Preview.png)|![After](03_Preview.png)
+
 ```
 import PreviewColorBlindness
 
