@@ -12,89 +12,68 @@ import MetalKit
 
 /// What type of colour blindness to simulate
 public enum ColorBlindnessType {
-  case none
-  case protanope
-  case deuteranope
-  case tritanopia
-  case custom(float3x3)
-  
-  var colorMatrix: float3x3 {
-    switch self {
-    case .none:
-      return simd_float3x3(1)
-    case .protanope:
-      return simd_matrix(
-        SIMD3<Float>(0.567,0.433,0),
-        SIMD3<Float>(0.558,0.442,0),
-        SIMD3<Float>(0,0.242,0.758)
-      )
-    case .deuteranope:
-      return simd_matrix(
-        SIMD3<Float>(0.625,0.375,0),
-        SIMD3<Float>(0.7,0.3,0),
-        SIMD3<Float>(0,0.3,0.7)
-      )
-    case .tritanopia:
-      return simd_matrix(
-        SIMD3<Float>(0.95,0.05,0),
-        SIMD3<Float>(0,0.433,0.567),
-        SIMD3<Float>(0,0.475,0.525)
-      )
-    case .custom(let value):
-      return value
+    case none
+    case protanope
+    case deuteranope
+    case tritanopia
+    case custom(float3x3)
+
+    var colorMatrix: float3x3 {
+        switch self {
+        case .none:
+            return simd_float3x3(1)
+        case .protanope:
+            return simd_matrix(
+                SIMD3<Float>(0.567,0.433,0),
+                SIMD3<Float>(0.558,0.442,0),
+                SIMD3<Float>(0,0.242,0.758)
+            )
+        case .deuteranope:
+            return simd_matrix(
+                SIMD3<Float>(0.625,0.375,0),
+                SIMD3<Float>(0.7,0.3,0),
+                SIMD3<Float>(0,0.3,0.7)
+            )
+        case .tritanopia:
+            return simd_matrix(
+                SIMD3<Float>(0.95,0.05,0),
+                SIMD3<Float>(0,0.433,0.567),
+                SIMD3<Float>(0,0.475,0.525)
+            )
+        case .custom(let value):
+            return value
+        }
     }
-  }
 }
 
 public extension View {
-  
-  func previewColorBlindness(type: ColorBlindnessType) -> some View {
-    modifier(ColorBlindness(view: self, type: type))
-  }
-  
-}
 
-/// View Modifier
-public struct ColorBlindness<V>: ViewModifier where V: View {
-  
-  let view: V
-  let type: ColorBlindnessType
-  @State var image: UIImage?
-  @State var imageSize: CGSize = .zero
-  
-  internal func createImage() -> UIImage? {
-    let engine = MetalEngine.instance
-    let snapshotImage = view.asImage()
-    var texture = snapshotImage.textureFromImage(device: engine.device)
-    engine.apply(newTex: &texture, colorMatrix: type.colorMatrix, size: CGSize(width: snapshotImage.cgImage!.width, height: snapshotImage.cgImage!.height))
-    let outputImage = texture?.uiImage()
-    
-    self.imageSize = snapshotImage.size
-    
-    return outputImage
-  }
-  
-  public func createReferenceImage() async -> UIImage? {
-    //try? await Task.sleep(nanoseconds: UInt64(0.032 * Double(NSEC_PER_SEC)))
-    //sleep(UInt32(0.032))
-    
-    return createImage()
-  }
-  
-  public func body(content: Content) -> some View {
-    Group {
-      if let image = image {
-        Image(uiImage: image)
-          .resizable()
-          .frame(width: imageSize.width, height: imageSize.height)
-      } else {
-        view
-      }
+    func previewColorBlindness(type: ColorBlindnessType, isEnabled: Bool = true) -> some View {
+
+        func shader(type: ColorBlindnessType) -> Shader {
+            let function = ShaderFunction(library: .bundle(.module), name: "colorBlindness")
+
+            let matrix = type.colorMatrix
+
+            let args: [Shader.Argument] = [
+                .float(matrix[0][0]),
+                .float(matrix[1][0]),
+                .float(matrix[2][0]),
+
+                .float(matrix[0][1]),
+                .float(matrix[1][1]),
+                .float(matrix[2][1]),
+
+                .float(matrix[0][2]),
+                .float(matrix[1][2]),
+                .float(matrix[2][2]),
+            ]
+
+            let shader = Shader(function: function, arguments: args)
+
+            return shader
+        }
+        return self.layerEffect(shader(type: type), maxSampleOffset: .init(width: 10, height: 10), isEnabled: isEnabled)
     }
-    .padding(0)
-    .task {
-      image = await createReferenceImage()
-    }
-  }
-  
+
 }
